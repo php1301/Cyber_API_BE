@@ -3,22 +3,18 @@
   "version": "0.0.0",
   "author": "php1301",
   "scripts": {
-    "prestart": "npm run drop-sqlite-db || true",
     "start": "npm run nodemon",
-    "poststart": "npm run create-sqlite-db",
     "dev": "cross-env NODE_ENV=development node ./api/api.js",
     "nodemon": "nodemon --exec npm run dev",
-    "create-sqlite-db": "shx touch ./db/database.sqlite",
-    "drop-sqlite-db": "shx rm ./db/database.sqlite",
     "lint": "eslint ./api/. ./config/. ./test/.",
     "prepush": "npm test",
     "pretest": "npm run lint",
     "production": "cross-env NODE_ENV=production node ./api/api.js",
-    "test": "npm run create-sqlite-db; cross-env NODE_ENV=testing jest --coverage; npm run drop-sqlite-db",
+    "test": " cross-env NODE_ENV=testing jest --coverage",
     "test-ci": "jest --coverage --forceExit"
   },
   "_moduleAliases": {
-    "@root"      : ".",
+    "@root": ".",
     "@configs": "./configs",
     "@apis": "./apis"
   },
@@ -43,7 +39,9 @@
     "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
     "sequelize": "^6.0.0",
-    "sqlite3": "^4.0.0"
+    "sqlite3": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
