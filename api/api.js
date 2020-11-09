@@ -17,7 +17,7 @@ const env = process.env.NODE_ENV;
 
 const app = express();
 const server = http.Server(app);
-console.log(config.publicRoutes)
+console.log(config.publicRoutes);
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
 
 const db = dbService(env).start();
