@@ -1,15 +1,15 @@
 const development = {
-  database: 'databasename',
-  username: 'username123',
-  password: 'password123',
-  host: 'localshost',
+  database: 'cyberapi',
+  username: 'root',
+  password: 'pinodien',
+  host: 'localhost',
   dialect: 'mysql',
 };
 
 const testing = {
-  database: 'databasename',
-  username: 'username',
-  password: 'password',
+  database: 'cyberapi',
+  username: 'root',
+  password: 'pinodien',
   host: 'localhost',
   dialect: 'mysql',
 };
