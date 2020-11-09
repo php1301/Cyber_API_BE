@@ -17,6 +17,11 @@
     "test": "npm run create-sqlite-db; cross-env NODE_ENV=testing jest --coverage; npm run drop-sqlite-db",
     "test-ci": "jest --coverage --forceExit"
   },
+  "_moduleAliases": {
+    "@root"      : ".",
+    "@configs": "./configs",
+    "@apis": "./apis"
+  },
   "jest": {
     "globals": {
       "__DEV__": true
@@ -35,6 +40,7 @@
     "express-routes-mapper": "^1.0.2",
     "helmet": "^3.12.0",
     "jsonwebtoken": "^8.2.1",
+    "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
     "sequelize": "^6.0.0",
     "sqlite3": "^4.0.0"

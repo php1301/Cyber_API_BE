@@ -2,7 +2,8 @@
 	"extends": "airbnb-base",
 	"plugins": ["import"],
 	"rules": {
-		"arrow-parens": ["error", "always"]
+		"arrow-parens": ["error", "always"],
+		"linebreak-style": 0
 	},
 	"env": {
 		"jest": true
