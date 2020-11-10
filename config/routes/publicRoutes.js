@@ -1,5 +1,5 @@
 const publicRoutes = {
-  'GET /register': 'UserController.register',
+  'POST /register': 'UserController.register',
 };
 
 module.exports = publicRoutes;
