@@ -2,12 +2,12 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
 const http = require('http');
-const mapRoutes = require('express-routes-mapper');
+// const mapRoutes = require('express-routes-mapper');
 const cors = require('cors');
 
 
 const config = require('../config/index');
-const dbService = require('./services/db.service');
+const dbService = require('../services/db.service');
 
 const env = process.env.NODE_ENV;
 
@@ -17,10 +17,10 @@ const env = process.env.NODE_ENV;
 
 const app = express();
 const server = http.Server(app);
-console.log(config.publicRoutes);
-const mappedOpenRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
+// const mappedOpenRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
 
 const db = dbService(env).start();
+
 
 // cors
 app.use(cors());
@@ -36,8 +36,7 @@ app.use(helmet({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// /public
-app.use('/api/public', mappedOpenRoutes);
+app.use('/api', require('./routes/routes'));
 
 server.listen(config.port, () => {
   if (env !== 'production' &&
