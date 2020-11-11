@@ -1,23 +1,25 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+
 const development = {
-  database: 'cyberapi',
-  username: 'root',
-  password: 'pinodien',
-  host: 'localhost',
+  database: process.env.DB_NAME,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
   dialect: 'mysql',
 };
 
 const testing = {
-  database: 'cyberapi',
-  username: 'root',
-  password: 'pinodien',
-  host: 'localhost',
+  database: process.env.DB_NAME,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
   dialect: 'mysql',
 };
 
 const production = {
   database: process.env.DB_NAME,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST || 'localhost',
   dialect: 'mysql',
 };
