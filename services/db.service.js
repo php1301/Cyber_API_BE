@@ -1,8 +1,31 @@
-const database = require('../config/database');
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
+const Sequelize = require('sequelize');
+const sequelize = require('../config/database'); // database
+const glob = require('glob');
 
 
 const dbService = (env) => {
-  const authenticateDB = () => database.authenticate();
+  const db = {};
+  const authenticateDB = async () => {
+    await sequelize.authenticate();
+    glob.sync('api/**/models/*.js', {
+      cwd: process.env.NODE_PATH || '.',
+    }).forEach((file) => {
+      const model = require(`../${file}`)(sequelize, Sequelize);
+      console.log(model);
+      db[model.name] = model;
+    });
+
+    Object.keys(db).forEach((modelName) => {
+      if (db[modelName].associate) {
+        db[modelName].associate(db);
+      }
+    });
+    db.sequelize = sequelize;
+    db.Sequelize = Sequelize;
+    db.sequelize.sync({ alter: true });
+  };
 
   const successfulDBStart = () => (
     console.info('connection to the database has been established successfully')
@@ -20,6 +43,7 @@ const dbService = (env) => {
   const devStart = async () => {
     try {
       await authenticateDB();
+      successfulDBStart();
     } catch (e) {
       errorDBStart(e);
     }
@@ -27,6 +51,7 @@ const dbService = (env) => {
   const stagingStart = async () => {
     try {
       await authenticateDB();
+      successfulDBStart();
     } catch (e) {
       errorDBStart(e);
     }
@@ -34,6 +59,7 @@ const dbService = (env) => {
   const testStart = async () => {
     try {
       await authenticateDB();
+      successfulDBStart();
     } catch (e) {
       errorDBStart(e);
     }
@@ -41,6 +67,7 @@ const dbService = (env) => {
   const prodStart = async () => {
     try {
       await authenticateDB();
+      successfulDBStart();
     } catch (e) {
       errorDBStart(e);
     }
