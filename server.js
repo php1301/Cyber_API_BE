@@ -6,8 +6,8 @@ const http = require('http');
 const cors = require('cors');
 
 
-const config = require('../config/index');
-const dbService = require('../services/db.service');
+const config = require('./config/index');
+const dbService = require('./services/db.service');
 
 const env = process.env.NODE_ENV;
 
@@ -36,7 +36,7 @@ app.use(helmet({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/api', require('./routes/routes'));
+app.use('/api', require('./api/routes'));
 
 server.listen(config.port, () => {
   if (env !== 'production' &&
