@@ -4,12 +4,12 @@
   "author": "php1301",
   "scripts": {
     "start": "npm run nodemon",
-    "dev": "cross-env NODE_ENV=development node ./api/api.js",
+    "dev": "cross-env NODE_ENV=development node ./server.js",
     "nodemon": "nodemon --exec npm run dev",
     "lint": "eslint ./api/. ./config/. ./test/.",
     "prepush": "npm test",
     "pretest": "npm run lint",
-    "production": "cross-env NODE_ENV=production node ./api/api.js",
+    "production": "cross-env NODE_ENV=production node ./server.js",
     "test": " cross-env NODE_ENV=testing jest --coverage",
     "test-ci": "jest --coverage --forceExit"
   },
@@ -36,6 +36,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.16.3",
     "express-routes-mapper": "^1.0.2",
+    "glob": "^7.1.6",
     "helmet": "^3.12.0",
     "jsonwebtoken": "^8.2.1",
     "module-alias": "^2.2.2",

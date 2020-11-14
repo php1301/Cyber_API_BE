@@ -3,6 +3,7 @@
 	"plugins": ["import"],
 	"rules": {
 		"arrow-parens": ["error", "always"],
+		"func-names": 0,
 		"linebreak-style": 0
 	},
 	"env": {
