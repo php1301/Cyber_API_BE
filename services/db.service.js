@@ -6,14 +6,13 @@ const glob = require('glob');
 
 
 const dbService = (env) => {
-  const db = {};
-  const authenticateDB = async () => {
-    await sequelize.authenticate();
+  const generateModel = () => {
+    const db = {};
     glob.sync('api/**/models/*.js', {
       cwd: process.env.NODE_PATH || '.',
     }).forEach((file) => {
       const model = require(`../${file}`)(sequelize, Sequelize);
-      console.log(model);
+      // console.log(model);
       db[model.name] = model;
     });
 
@@ -25,6 +24,11 @@ const dbService = (env) => {
     db.sequelize = sequelize;
     db.Sequelize = Sequelize;
     db.sequelize.sync({ alter: true });
+    return db;
+  };
+  const authenticateDB = async () => {
+    await sequelize.authenticate();
+    generateModel();
   };
 
   const successfulDBStart = () => (
@@ -95,7 +99,7 @@ const dbService = (env) => {
     }
   };
 
-  return { start };
+  return { start, generateModel };
 };
 
 module.exports = dbService;
