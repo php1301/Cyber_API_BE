@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     chietKhau: {
-      type: Sequelize.STRING,
+      type: Sequelize.FLOAT,
     },
   }, {
     sequelize,
