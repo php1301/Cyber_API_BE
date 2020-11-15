@@ -2,8 +2,9 @@
 const authService = require('../../services/auth.service');
 const bcryptService = require('../../services/bcrypt.service');
 const _ = require('lodash');
-const User = require('./models/User');
+const model = require('../../services/db.service');
 
+const User = model().generateModel().user;
 
 const UserController = () => {
   const register = async (req, res) => {
@@ -11,7 +12,6 @@ const UserController = () => {
     if (password === password2) {
       try {
         const hashedPassword = await bcryptService().password(password);
-        console.log(hashedPassword);
         const user = await User.create({
           email,
           password: hashedPassword,
@@ -40,7 +40,7 @@ const UserController = () => {
         console.log(isMatched);
         if (isMatched) {
           // Các service của auth cho việc auth, tạo token,...
-          const payload = _.pick(user, ['taiKhoan', 'email']);
+          const payload = _.pick(user, ['taiKhoan', 'email', 'role']);
           const token = authService().issue({ payload });
           return res.status(200).json({ token });
         }
