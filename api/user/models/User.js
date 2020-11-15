@@ -18,6 +18,10 @@ module.exports = (sequelize, Sequelize) => {
         msg: 'User with this email already exist.',
       },
     },
+    role: {
+      type: Sequelize.STRING,
+      defaultValue: 'client',
+    },
     maLoaiNguoiDung: {
       type: Sequelize.STRING,
     },
