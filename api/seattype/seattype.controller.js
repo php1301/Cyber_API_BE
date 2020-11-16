@@ -1,6 +1,6 @@
-const model = require('../../services/db.service');
+const model = require('./models/SeatType');
 
-const SeatType = model().generateModel().seattype;
+const SeatType = model();
 const SeatTypeController = () => {
   const createSeatType = async (req, res) => {
     const { tenLoaiGhe, moTa, chietKhau } = req.body;
@@ -9,7 +9,6 @@ const SeatTypeController = () => {
         const newSeatType = await SeatType.create({
           tenLoaiGhe,
           moTa,
-          chietKhau,
         });
         return res.status(200).json({ newSeatType });
       } catch (e) {

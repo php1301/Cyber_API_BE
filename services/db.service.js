@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 const sequelize = require('../config/database'); // database
 const glob = require('glob');
 
@@ -11,19 +11,18 @@ const dbService = (env) => {
     glob.sync('api/**/models/*.js', {
       cwd: process.env.NODE_PATH || '.',
     }).forEach((file) => {
-      const model = require(`../${file}`)(sequelize, Sequelize);
-      // console.log(model);
+      const model = require(`../${file}`);
+      model();
       db[model.name] = model;
     });
-
     Object.keys(db).forEach((modelName) => {
       if (db[modelName].associate) {
         db[modelName].associate(db);
       }
     });
     db.sequelize = sequelize;
-    db.Sequelize = Sequelize;
-    db.sequelize.sync({ alter: true });
+    // db.Sequelize = Sequelize;
+    // db.sequelize.sync({ alter: true });
     return db;
   };
   const authenticateDB = async () => {

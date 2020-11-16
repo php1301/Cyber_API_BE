@@ -2,10 +2,11 @@
 const authService = require('../../services/auth.service');
 const bcryptService = require('../../services/bcrypt.service');
 const _ = require('lodash');
-const model = require('../../services/db.service');
+// const model = require('../../services/db.service');
 
-const User = model().generateModel().user;
+const model = require('./models/User');
 
+const User = model();
 const UserController = () => {
   const register = async (req, res) => {
     const { email, password, password2 } = req.body;
@@ -16,7 +17,8 @@ const UserController = () => {
           email,
           password: hashedPassword,
         });
-        const token = authService().issue({ id: user.taiKhoan });
+        const payload = _.pick(user, ['taiKhoan', 'email', 'role']);
+        const token = authService().issue({ payload });
         return res.status(200).json({ token });
       } catch (e) {
         console.log(e);

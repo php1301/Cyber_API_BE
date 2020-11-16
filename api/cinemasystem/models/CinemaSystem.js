@@ -1,5 +1,7 @@
+const Sequelize = require('sequelize');
+const sequelize = require('../../../config/database');
 
-module.exports = (sequelize, Sequelize) => {
+module.exports = () => {
   // CGV...
   const modelName = 'cinemasystem';
   class CinemaSystem extends Sequelize.Model {}
