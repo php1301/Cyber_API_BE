@@ -19,6 +19,9 @@ module.exports = () => {
     biDanh: {
       type: Sequelize.STRING,
     },
+    maCumRap: {
+      type: Sequelize.STRING,
+    },
     logo: {
       type: Sequelize.STRING,
     },
@@ -31,6 +34,9 @@ module.exports = () => {
            * -------------- ASSOCIATION ----------------
            */
   CinemaSystem.associate = function (models) {
+    CinemaSystem.hasMany(models.lichchieu, {
+      onDelete: 'CASCADE',
+    });
     CinemaSystem.hasMany(models.cinematype, {
       onDelete: 'CASCADE',
     });

@@ -30,12 +30,13 @@ module.exports = () => {
        * -------------- ASSOCIATION ----------------
        */
   Cinema.associate = function (models) {
+    Cinema.hasMany(models.lichchieu, { as: 'Cac_Lich_Chieu_Cua_Rap' });
     Cinema.belongsTo(models.cinematype, {
-      foreignKey: 'maCumRap',
-      as: 'maCumRap_fk',
+      as: 'Thuoc_Cum_Rap',
     });
     Cinema.hasMany(models.seat, {
-      onDelete: 'CASCADE',
+      foreignKey: 'maRap',
+      as: 'Cac_Cho_Ngoi_Trong_Rap',
     });
   };
   return Cinema;
