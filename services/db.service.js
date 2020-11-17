@@ -13,7 +13,7 @@ const dbService = (env) => {
     }).forEach((file) => {
       const model = require(`../${file}`);
       model();
-      db[model.name] = model;
+      db[model().name] = model();
     });
     Object.keys(db).forEach((modelName) => {
       if (db[modelName].associate) {
@@ -22,7 +22,7 @@ const dbService = (env) => {
     });
     db.sequelize = sequelize;
     // db.Sequelize = Sequelize;
-    // db.sequelize.sync({ alter: true });
+    db.sequelize.sync({ alter: true });
     return db;
   };
   const authenticateDB = async () => {
