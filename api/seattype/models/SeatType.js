@@ -33,7 +33,9 @@ module.exports = () => {
          * -------------- ASSOCIATION ----------------
          */
   SeatType.associate = function (models) {
-    SeatType.hasMany(models.seat);
+    SeatType.hasMany(models.seat, {
+      foreignKey: 'maLoaiGhe',
+    });
   };
   /**
          * -------------- CLASS METHOD ----------------
