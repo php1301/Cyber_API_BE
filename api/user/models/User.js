@@ -26,6 +26,9 @@ module.exports = () => {
     maLoaiNguoiDung: {
       type: Sequelize.STRING,
     },
+    maNhom: {
+      type: Sequelize.STRING,
+    },
     password: {
       type: Sequelize.STRING,
     },
@@ -58,8 +61,10 @@ module.exports = () => {
      */
   User.associate = function (models) {
     User.belongsTo(models.usertype, {
-      foreignKey: 'maLoaiNguoiDung',
-      as: 'maLoaiNguoiDung_fk',
+      as: 'Loai_Nguoi_Dung',
+    });
+    User.belongsTo(models.nhom, {
+      as: 'Nhom',
     });
   };
   /**
