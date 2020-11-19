@@ -61,9 +61,11 @@ module.exports = () => {
      */
   User.associate = function (models) {
     User.belongsTo(models.usertype, {
+      foreignKey: 'maLoaiNguoiDung',
       as: 'Loai_Nguoi_Dung',
     });
     User.belongsTo(models.nhom, {
+      foreignKey: 'maNhom',
       as: 'Nhom',
     });
   };

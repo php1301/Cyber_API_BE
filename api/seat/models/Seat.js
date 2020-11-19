@@ -39,8 +39,8 @@ module.exports = () => {
        * -------------- ASSOCIATION ----------------
        */
   Seat.associate = function (models) {
-    Seat.belongsTo(models.seattype, { onDelete: 'CASCADE', as: 'Loai_Ghe' });
-    Seat.belongsTo(models.cinema, { onDelete: 'CASCADE', as: 'Cac_Cho_Ngoi_Thuoc_Rap' });
+    Seat.belongsTo(models.seattype, { onDelete: 'CASCADE', as: 'Loai_Ghe', foreignKey: 'maLoaiGhe' });
+    Seat.belongsTo(models.cinema, { onDelete: 'CASCADE', as: 'Cac_Cho_Ngoi_Thuoc_Rap', foreignKey: 'maRap' });
   };
   /**
        * -------------- CLASS METHOD ----------------
