@@ -30,7 +30,7 @@ module.exports = () => {
       type: Sequelize.STRING,
     },
     danhGia: {
-      type: Sequelize.STRING,
+      type: Sequelize.FLOAT,
     },
     daXoa: {
       type: Sequelize.BOOLEAN,
