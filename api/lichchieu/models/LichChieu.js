@@ -53,15 +53,18 @@ module.exports = () => {
       as: 'Cac_Lich_Chieu_rap',
     });
     LichChieu.belongsTo(models.phim, {
-      foreignKey: 'Phim_Lich_Chieu',
+      foreignKey: 'maPhim',
+      as: 'Phim_Lich_Chieu',
     });
     LichChieu.belongsToMany(models.nhom, {
       through: 'LichChieu_Nhom',
     });
     LichChieu.belongsTo(models.cinematype, {
+      foreignKey: 'maCumRap',
       as: 'Cac_Lich_Chieu_Cum_Rap',
     });
     LichChieu.belongsTo(models.cinemasystem, {
+      foreignKey: 'maHeThongRap',
       as: 'Cac_Lich_Chieu_He_Thong_Rap',
     });
   };
