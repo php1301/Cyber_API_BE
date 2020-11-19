@@ -9,6 +9,9 @@ module.exports = () => {
   Nhom.init({
     maNhom: {
       type: Sequelize.STRING,
+      unique: {
+        msg: 'Nhom existed',
+      },
       primaryKey: true,
     },
     tenNhom: {
