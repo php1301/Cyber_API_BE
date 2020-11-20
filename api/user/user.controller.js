@@ -55,9 +55,50 @@ const UserController = () => {
     }
     return res.status(400).json({ msg: 'Bad Request: Email or password is wrong' });
   };
+
+  const layDanhSachNguoiDung = async (req, res) => {
+    const userData = await User.findAll();
+    res.status(200).json({ userData });
+  };
+
+  const layDanhSachNguoiDungPhanTrang = async (req, res) => {
+    const { page, pageSize } = req.query;
+    const pageNum = parseInt(page || 0, 10);
+    const pageSizeNum = parseInt(pageSize || 10, 10);
+    const offset = pageNum * pageSizeNum;
+    const limit = pageSizeNum;
+    const userData = await User.findAndCountAll({
+      limit,
+      offset,
+    });
+    res.status(200).json({ userData });
+  };
+  const layThongTinTaiKhoan = async (req, res) => {
+    const { taiKhoan } = req.query;
+    const thongTinTaiKhoan = await User.findByPk(taiKhoan);
+    if (!thongTinTaiKhoan) { res.status(400).json({ msg: 'User not found' }); }
+    res.status(200).json({ thongTinTaiKhoan });
+  };
+  const xoaNguoiDung = async (req, res) => {
+    const { taiKhoan } = req.body;
+    const affected = await User.destroy({
+      where: {
+        taiKhoan,
+      },
+    });
+    if (affected === 0) {
+      res.status(400).json({ msg: 'No User with this id found' });
+    }
+    res.status(200).json({ msg: 'User deleted' });
+  };
+
   return {
     register,
     login,
+    layDanhSachNguoiDung,
+    layDanhSachNguoiDungPhanTrang,
+    layThongTinTaiKhoan,
+    xoaNguoiDung,
   };
 };
 
