@@ -70,6 +70,11 @@ module.exports = () => {
     });
   };
   /**
+         * -------------- SCOPES ----------------
+         */
+
+  // User.addScope()
+  /**
      * -------------- CLASS METHOD ----------------
      */
   // eslint-disable-next-line
