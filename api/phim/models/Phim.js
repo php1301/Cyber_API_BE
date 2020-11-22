@@ -27,7 +27,7 @@ module.exports = () => {
       type: Sequelize.STRING,
     },
     ngayKhoiChieu: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
     },
     danhGia: {
       type: Sequelize.FLOAT,
