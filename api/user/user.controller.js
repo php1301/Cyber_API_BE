@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const Sequelize = require('sequelize');
 const authService = require('../../services/auth.service');
 const bcryptService = require('../../services/bcrypt.service');
 const _ = require('lodash');
@@ -57,12 +58,33 @@ const UserController = () => {
   };
 
   const layDanhSachNguoiDung = async (req, res) => {
-    const userData = await User.findAll();
+    const { keyword } = req.query;
+    const userData = await User.findAll({
+      where: {
+        [Sequelize.Op.or]: {
+          email: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          maNhom: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          maLoaiNguoiDung: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          soDT: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          hoTen: {
+            [Sequelize.Op.contains]: keyword,
+          },
+        },
+      },
+    });
     res.status(200).json({ userData });
   };
 
   const layDanhSachNguoiDungPhanTrang = async (req, res) => {
-    const { page, pageSize } = req.query;
+    const { page, pageSize, keyword } = req.query;
     const pageNum = parseInt(page || 0, 10);
     const pageSizeNum = parseInt(pageSize || 10, 10);
     const offset = pageNum * pageSizeNum;
@@ -70,6 +92,25 @@ const UserController = () => {
     const userData = await User.findAndCountAll({
       limit,
       offset,
+      where: {
+        [Sequelize.Op.or]: {
+          email: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          maNhom: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          maLoaiNguoiDung: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          soDT: {
+            [Sequelize.Op.contains]: keyword,
+          },
+          hoTen: {
+            [Sequelize.Op.contains]: keyword,
+          },
+        },
+      },
     });
     res.status(200).json({ userData });
   };
@@ -78,6 +119,30 @@ const UserController = () => {
     const thongTinTaiKhoan = await User.findByPk(taiKhoan);
     if (!thongTinTaiKhoan) { res.status(400).json({ msg: 'User not found' }); }
     res.status(200).json({ thongTinTaiKhoan });
+  };
+  const capNhatThongTinNguoiDung = async (req, res) => {
+    const {
+      taiKhoan, matKhau, email, soDT, maNhom, maLoaiNguoiDung, hoTen,
+    } = req.query;
+    // PATCH
+    // const found = User.findByPk(taiKhoan);
+    // (await found).set(body)
+    // .save
+    // PUT
+    const updatedUser = await User.update({
+      matKhau,
+      email,
+      soDT,
+      maNhom,
+      maLoaiNguoiDung,
+      hoTen,
+    }, {
+      where: {
+        taiKhoan,
+      },
+    });
+    if (updatedUser) res.status(200).json({ updatedUser });
+    res.status(400).json({ msg: 'Updated not succesfully' });
   };
   const xoaNguoiDung = async (req, res) => {
     const { taiKhoan } = req.body;
@@ -98,6 +163,7 @@ const UserController = () => {
     layDanhSachNguoiDung,
     layDanhSachNguoiDungPhanTrang,
     layThongTinTaiKhoan,
+    capNhatThongTinNguoiDung,
     xoaNguoiDung,
   };
 };
