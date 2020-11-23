@@ -10,13 +10,13 @@ const NhomController = () => {
           maNhom,
           tenNhom,
         });
-        res.status(200).json({ newNhom });
+        return res.status(200).json({ newNhom });
       } catch (e) {
         console.log(e);
         throw Error(e);
       }
     }
-    res.status(400).json({ msg: 'Bad request' });
+    return res.status(400).json({ msg: 'Bad request' });
   };
   return {
     taoNhom,
