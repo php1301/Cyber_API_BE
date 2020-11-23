@@ -19,12 +19,9 @@ module.exports = () => {
         msg: 'User with this email already exist.',
       },
     },
-    role: {
-      type: Sequelize.STRING,
-      defaultValue: 'client',
-    },
     maLoaiNguoiDung: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     maNhom: {
       type: Sequelize.STRING,
@@ -62,18 +59,28 @@ module.exports = () => {
   User.associate = function (models) {
     User.belongsTo(models.usertype, {
       foreignKey: 'maLoaiNguoiDung',
-      as: 'Loai_Nguoi_Dung',
+      as: 'role',
     });
     User.belongsTo(models.nhom, {
       foreignKey: 'maNhom',
-      as: 'Nhom',
+      as: 'nhom',
+    });
+    /**
+           * -------------- SCOPES ----------------
+           */
+    User.addScope('role', {
+      include: [
+        {
+          model: models.usertype,
+          as: 'role',
+          required: true,
+          attributes: {
+            exclude: ['id', 'description'],
+          },
+        },
+      ],
     });
   };
-  /**
-         * -------------- SCOPES ----------------
-         */
-
-  // User.addScope()
   /**
      * -------------- CLASS METHOD ----------------
      */
