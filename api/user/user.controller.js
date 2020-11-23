@@ -44,7 +44,6 @@ const UserController = () => {
         if (!user) res.status(400).json({ msg: 'Email or password is wrong' });
         // Các service của brcypt
         const isMatched = await bcryptService().comparePassword(password, user.password);
-        console.log(isMatched);
         if (isMatched) {
           // Các service của auth cho việc auth, tạo token,...
           const payload = _.pick(user, ['taiKhoan', 'email', 'maLoaiNguoiDung']);
