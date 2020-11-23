@@ -3,9 +3,26 @@
 // const Sequelize = require('sequelize');
 const sequelize = require('../config/database'); // database
 const glob = require('glob');
-
+const { rolesMap } = require('../api/user/user.enum');
+const bcryptService = require('./bcrypt.service');
 
 const dbService = (env) => {
+  const seed = async (db) => {
+    const hashedPassword = await bcryptService().password(process.env.ADMIN_PASSWORD || '@V3ryStR0N9P@asSWorD');
+    try {
+      await db.user.create({
+        email: process.env.ADMIN_EMAIL || 'admin',
+        password: hashedPassword,
+        maLoaiNguoiDung: rolesMap.admin, // user role
+      });
+    } catch (e) {
+      if (e.name === 'SequelizeUniqueConstraintError') {
+        console.log('Admin accound already exist in database.');
+      } else {
+        console.log(e);
+      }
+    }
+  };
   const generateModel = () => {
     const db = {};
     glob.sync('api/**/models/*.js', {
@@ -23,6 +40,7 @@ const dbService = (env) => {
     db.sequelize = sequelize;
     // db.Sequelize = Sequelize;
     db.sequelize.sync({ alter: true });
+    seed(db);
     return db;
   };
   const authenticateDB = async () => {
@@ -75,8 +93,6 @@ const dbService = (env) => {
       errorDBStart(e);
     }
   };
-
-
   const start = async () => {
     switch (env) {
       case 'development':
