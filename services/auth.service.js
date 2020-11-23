@@ -26,8 +26,9 @@ const authService = () => {
       }).catch((e) => console.log(e));
   };
   const authorize = (userTypeArray) => (req, res, next) => {
-    const { role } = req.user.payload;
-    if (userTypeArray.findIndex((elm) => elm === role) !== -1) { return next(); }
+    const { maLoaiNguoiDung } = req.user.payload;
+    console.log(maLoaiNguoiDung);
+    if (userTypeArray.findIndex((elm) => elm === maLoaiNguoiDung) !== -1) { return next(); }
     return res.status(401).json({ message: 'You dont have permission' });
   };
   return {
