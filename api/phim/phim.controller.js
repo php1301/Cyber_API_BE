@@ -16,7 +16,7 @@ const PhimController = () => {
           },
         },
       });
-      res.status(200).json({ phimData });
+      return res.status(200).json({ phimData });
     } catch (e) {
       console.log(e);
       throw Error(e);
@@ -42,7 +42,7 @@ const PhimController = () => {
         offset,
         limit,
       });
-      res.status(200).json({ phimData });
+      return res.status(200).json({ phimData });
     } catch (e) {
       console.log(e);
       throw Error(e);
@@ -71,7 +71,7 @@ const PhimController = () => {
         offset,
         limit,
       });
-      res.status(200).json({ phimData });
+      return res.status(200).json({ phimData });
     } catch (e) {
       console.log(e);
       throw Error(e);
@@ -93,7 +93,7 @@ const PhimController = () => {
           danhGia,
           biDanh,
         });
-        res.status(200).json({ newPhim });
+        return res.status(200).json({ newPhim });
       } catch (e) {
         console.log(e);
         throw Error(e);
@@ -101,11 +101,26 @@ const PhimController = () => {
     }
     res.status(400).json({ msg: 'themPhim not succesfully' });
   };
+  const themHinhAnhPhimUpload = async (req, res) => {
+    console.log(req.file);
+    const { maPhim } = req.params;
+    // == Phim.update
+    // 2 ways https://sequelize.org/v5/manual/instances.html#updating---saving---persisting-an-instance
+    const phimToUpload = await Phim.findByPk(maPhim);
+
+    if (phimToUpload) {
+      phimToUpload.hinhAnh = req.file.path;
+      phimToUpload.save()
+        .then((r) => res.stautus(200).json(r))
+        .catch((e) => { console.log(e); return res.status(400).json({ msg: e }); });
+    }
+    return res.status(400).json({ msg: 'Phim not exists' });
+  };
   const layThongTinPhim = async (req, res) => {
     const { maPhim } = req.query;
     const thongTinPhim = await Phim.findByPk(maPhim);
-    if (!thongTinPhim) res.status(400).json({ msg: 'Phim not exists' });
-    res.status(200).json({ thongTinPhim });
+    if (!thongTinPhim) return res.status(400).json({ msg: 'Phim not exists' });
+    return res.status(200).json({ thongTinPhim });
   };
   const xoaPhim = async (req, res) => {
     const { maPhim } = req.body;
@@ -115,13 +130,14 @@ const PhimController = () => {
       },
     });
     if (affected === 0) {
-      res.status(400).json({ msg: 'No Phim with this id found' });
+      return res.status(400).json({ msg: 'No Phim with this id found' });
     }
-    res.status(200).json({ msg: 'Phim deleted' });
+    return res.status(200).json({ msg: 'Phim deleted' });
   };
   return {
     layDanhSachPhim,
     themPhim,
+    themHinhAnhPhimUpload,
     layThongTinPhim,
     xoaPhim,
     layDanhSachPhimPhanTrang,
