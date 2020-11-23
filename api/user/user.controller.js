@@ -14,11 +14,15 @@ const UserController = () => {
     if (password === password2) {
       try {
         const hashedPassword = await bcryptService().password(password);
+        // create = build + save
+        // https://sequelize.org/master/manual/model-instances.html
+        // update vài field thì cần save lại
         const user = await User.create({
           email,
           password: hashedPassword,
+          maLoaiNguoiDung: 'client',
         });
-        const payload = _.pick(user, ['taiKhoan', 'email', 'role']);
+        const payload = _.pick(user, ['taiKhoan', 'email', 'maLoaiNguoiDung']);
         const token = authService().issue({ payload });
         return res.status(200).json({ token });
       } catch (e) {
@@ -43,7 +47,7 @@ const UserController = () => {
         console.log(isMatched);
         if (isMatched) {
           // Các service của auth cho việc auth, tạo token,...
-          const payload = _.pick(user, ['taiKhoan', 'email', 'role']);
+          const payload = _.pick(user, ['taiKhoan', 'email', 'maLoaiNguoiDung']);
           const token = authService().issue({ payload });
           return res.status(200).json({ token });
         }
@@ -80,7 +84,7 @@ const UserController = () => {
         },
       },
     });
-    res.status(200).json({ userData });
+    return res.status(200).json({ userData });
   };
 
   const layDanhSachNguoiDungPhanTrang = async (req, res) => {
@@ -112,13 +116,13 @@ const UserController = () => {
         },
       },
     });
-    res.status(200).json({ userData });
+    return res.status(200).json({ userData });
   };
   const layThongTinTaiKhoan = async (req, res) => {
-    const { taiKhoan } = req.query;
+    const { taiKhoan } = req.params;
     const thongTinTaiKhoan = await User.findByPk(taiKhoan);
-    if (!thongTinTaiKhoan) { res.status(400).json({ msg: 'User not found' }); }
-    res.status(200).json({ thongTinTaiKhoan });
+    if (!thongTinTaiKhoan) { return res.status(400).json({ msg: 'User not found' }); }
+    return res.status(200).json({ thongTinTaiKhoan });
   };
   const capNhatThongTinNguoiDung = async (req, res) => {
     const {
@@ -141,20 +145,20 @@ const UserController = () => {
         taiKhoan,
       },
     });
-    if (updatedUser) res.status(200).json({ updatedUser });
-    res.status(400).json({ msg: 'Updated not succesfully' });
+    if (updatedUser) return res.status(200).json({ updatedUser });
+    return res.status(400).json({ msg: 'Updated not succesfully' });
   };
   const xoaNguoiDung = async (req, res) => {
-    const { taiKhoan } = req.body;
+    const { taiKhoan } = req.params;
     const affected = await User.destroy({
       where: {
         taiKhoan,
       },
     });
     if (affected === 0) {
-      res.status(400).json({ msg: 'No User with this id found' });
+      return res.status(400).json({ msg: 'No User with this id found' });
     }
-    res.status(200).json({ msg: 'User deleted' });
+    return res.status(200).json({ msg: 'User deleted' });
   };
 
   return {
