@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/api', require('./api/routes'));
-app.use('/swagger', require('./helpers/swagger'));
+app.use('/swagger', require('./documents/swagger'));
 
 server.listen(config.port, () => {
   if (env !== 'production' &&
