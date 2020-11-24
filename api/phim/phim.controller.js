@@ -123,7 +123,7 @@ const PhimController = () => {
     return res.status(200).json({ thongTinPhim });
   };
   const xoaPhim = async (req, res) => {
-    const { maPhim } = req.body;
+    const { maPhim } = req.params;
     const affected = await Phim.destroy({
       where: {
         maPhim,
