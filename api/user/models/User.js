@@ -65,6 +65,9 @@ module.exports = () => {
       foreignKey: 'maNhom',
       as: 'nhom',
     });
+    User.hasMany(models.ticket, {
+      onDelete: 'CASCADE',
+    });
     /**
            * -------------- SCOPES ----------------
            */
