@@ -30,6 +30,9 @@ module.exports = () => {
     kichHoat: {
       type: Sequelize.BOOLEAN,
     },
+    maVe: {
+      type: Sequelize.STRING,
+    },
   }, {
     sequelize,
     timestamps: true,
@@ -41,6 +44,7 @@ module.exports = () => {
   Seat.associate = function (models) {
     Seat.belongsTo(models.seattype, { onDelete: 'CASCADE', as: 'Loai_Ghe', foreignKey: 'maLoaiGhe' });
     Seat.belongsTo(models.cinema, { onDelete: 'CASCADE', as: 'Cac_Cho_Ngoi_Thuoc_Rap', foreignKey: 'maRap' });
+    Seat.belongsTo(models.ticket, { foreignKey: 'maVe', as: 'seats' });
   };
   /**
        * -------------- CLASS METHOD ----------------
