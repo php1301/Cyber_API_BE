@@ -67,6 +67,23 @@ module.exports = () => {
       foreignKey: 'maHeThongRap',
       as: 'Cac_Lich_Chieu_He_Thong_Rap',
     });
+    /**
+     * -------------- SCOPE ----------------
+     */
+    LichChieu.addScope('rapGhe', {
+      include: [
+        {
+          model: models.cinema,
+          required: true, // Inner Join
+          include: [
+            {
+              model: models.seat,
+              required: true,
+            },
+          ],
+        },
+      ],
+    });
   };
   return LichChieu;
 };
