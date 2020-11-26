@@ -9,5 +9,5 @@ const authService = require('../../services/auth.service');
 const auth = authService();
 
 const router = express.Router();
-router.post('/dat-ve', auth.authenticate, auth.authorize(['admin, client']), ticketController.datVe);
+router.post('/dat-ve', auth.authenticate, auth.authorize(['admin', 'client']), ticketController.datVe);
 module.exports = router;
