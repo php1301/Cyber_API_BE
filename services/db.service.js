@@ -23,7 +23,7 @@ const dbService = (env) => {
       }
     }
   };
-  const generateModel = () => {
+  const generateModel = (sync = true) => {
     const db = {};
     glob.sync('api/**/models/*.js', {
       cwd: process.env.NODE_PATH || '.',
@@ -39,8 +39,9 @@ const dbService = (env) => {
     });
     db.sequelize = sequelize;
     // db.Sequelize = Sequelize;
-    db.sequelize.sync({ alter: true });
-    seed(db);
+    if (sync) {
+      db.sequelize.sync({ alter: true }); seed(db);
+    }
     return db;
   };
   const authenticateDB = async () => {
