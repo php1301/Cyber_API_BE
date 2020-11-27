@@ -6,11 +6,9 @@ module.exports = () => {
   class Cinema extends Sequelize.Model {}
   Cinema.init({
     maRap: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       primaryKey: true,
-      unique: {
-        msg: 'This cinema already exist.',
-      },
+      autoIncrement: true,
     },
     tenRap: {
       type: Sequelize.STRING,
