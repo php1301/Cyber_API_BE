@@ -1,29 +1,32 @@
-const Sequelize = require('sequelize');
-const model = require('./models/Ticket');
-const seatModel = require('../seat/models/Seat');
+const db = require('../../services/db.service');
 
-const Ticket = model();
-const Seat = seatModel();
+// const model = require('./models/Ticket');
+// const seatModel = require('../seat/models/Seat');
+
+// const Ticket = model();
+// const Seat = seatModel();
 const TicketController = () => {
   const datVe = async (req, res) => {
+    const sequelize = db().generateModel(false);
     const { maLichChieu, danhSachVe, taiKhoanNguoiDung } = req.body;
     try {
-      Sequelize.Transaction(async (t) => {
-        const ticket = await Ticket.create({
+      const result = await sequelize.sequelize.transaction(async (t) => {
+        const ticket = await sequelize.ticket.create({
           maLichChieu,
           taiKhoanNguoiDung,
-          seats: [
+          seat_ticket: [
             danhSachVe,
           ],
         }, {
-          include: [Seat],
+          include: [{ model: sequelize.seat, as: 'seat_ticket' }],
           transaction: t,
         });
-        return res.status(200).json({ ticket });
+        return ticket;
       }); // Managed transaction, auto rollback if error
+      return res.status(200).json({ result });
     } catch (e) {
       console.log(e);
-      return res.status(400).json({ msg: e });
+      return res.status(400).json({ msg: e.message });
     }
   };
 
