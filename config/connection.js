@@ -1,5 +1,5 @@
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
-
+// Dùng lênh export nếu chạy seed
 const development = {
   database: process.env.DB_NAME,
   username: process.env.DB_USERNAME,
