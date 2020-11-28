@@ -112,7 +112,7 @@ const PhimController = () => {
       phimToUpload.hinhAnh = req.file.path;
       phimToUpload.save()
         .then((r) => res.stautus(200).json(r))
-        .catch((e) => { console.log(e); return res.status(400).json({ msg: e }); });
+        .catch((e) => { console.log(e); return res.status(400).json({ msg: e.message }); });
     }
     return res.status(400).json({ msg: 'Phim not exists' });
   };
@@ -134,6 +134,19 @@ const PhimController = () => {
     }
     return res.status(200).json({ msg: 'Phim deleted' });
   };
+  const layThongTinLichChieuPhim = async (req, res) => {
+    const { maPhim } = req.query;
+    try {
+      const thongTinLichChieuPhimData = Phim.scope('layThongTinLichChieuPhim').findAll({
+        where: {
+          maPhim,
+        },
+      });
+      res.status(200).json({ thongTinLichChieuPhimData });
+    } catch (e) {
+      res.status(400).json({ msg: e.message });
+    }
+  };
   return {
     layDanhSachPhim,
     themPhim,
@@ -142,6 +155,7 @@ const PhimController = () => {
     xoaPhim,
     layDanhSachPhimPhanTrang,
     layDanhSachPhimTheoNgay,
+    layThongTinLichChieuPhim,
   };
 };
 module.exports = PhimController;

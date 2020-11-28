@@ -8,8 +8,9 @@ module.exports = () => {
   // const Phim = db.define('Phim', {
   Phim.init({
     maPhim: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     tenPhim: {
       type: Sequelize.STRING,
@@ -51,7 +52,36 @@ module.exports = () => {
     Phim.belongsToMany(models.nhom, {
       through: 'Phim_Nhom',
     });
-    Phim.hasOne(models.lichchieu);
+    Phim.hasMany(models.lichchieu, { as: 'cacLichChieuCuaPhim', foreignKey: 'maPhim' });
+    /**
+     * -------------- SCOPE ----------------
+     */
+    Phim.addScope('layThongTinLichChieuPhim', {
+      include: [{
+        model: models.lichchieu,
+        required: true,
+        as: 'cacLichChieuCuaPhim',
+        attributes: {
+          include: ['maLichChieu', [Sequelize.col('cinema.tenRap'), 'tenRap'], 'thoiLuong', 'giaVe', 'ngayChieuGioChieu'],
+        },
+        include: [{
+          model: models.cinemasystem,
+          required: true,
+          attributes: {
+            include: ['maHeThongRap', 'tenHeThongRap', 'logo'],
+          },
+          as: 'cacLichChieuHeThongRap',
+          include: [{
+            model: models.cinematype,
+            required: true,
+            as: 'cumRapChieu',
+            attributes: {
+              include: ['maCumRap, tenCumRap, hinhAnh'],
+            },
+          }],
+        }],
+      }],
+    });
   };
   /**
      * -------------- CLASS METHOD ----------------

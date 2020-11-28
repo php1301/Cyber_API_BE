@@ -11,6 +11,7 @@ router.get('/phim-list', auth.authenticate, auth.authorize(['admin', 'client']),
 router.get('/phim-paginate', auth.authenticate, auth.authorize(['admin', 'client']), phimController.layDanhSachPhimPhanTrang);
 router.get('/phim-theo-ngay', auth.authenticate, auth.authorize(['admin', 'client']), phimController.layDanhSachPhimTheoNgay);
 router.get('/lay-thong-tin-phim', auth.authenticate, auth.authorize(['admin', 'client']), phimController.layThongTinPhim);
+router.get('/lay-lich-chieu-phim', auth.authenticate, phimController.layThongTinLichChieuPhim);
 router.post('/tao-phim', auth.authenticate, auth.authorize(['admin']), phimController.themPhim);
 router.post('/upload-hinh-anh-phim/:maPhim', auth.authenticate, auth.authorize(['admin']), uploadImage('phim'), phimController.themHinhAnhPhimUpload);
 router.delete('/:maPhim', auth.authenticate, auth.authorize(['admin']), phimController.xoaPhim);
