@@ -7,11 +7,9 @@ module.exports = () => {
 
   Ticket.init({
     maVe: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       primaryKey: true,
-      unique: {
-        msg: 'Ticket id must be unique',
-      },
+      autoIncrement: true,
     },
     ngayDat: {
       type: Sequelize.DATE,
@@ -24,7 +22,7 @@ module.exports = () => {
       type: Sequelize.INTEGER,
     },
     maLichChieu: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
     soDT: {
       type: Sequelize.STRING,
@@ -45,7 +43,7 @@ module.exports = () => {
      * -------------- ASSOCIATION ----------------
      */
   Ticket.associate = function (models) {
-    Ticket.hasMany(models.seat, { onDelete: 'CASCADE' });
+    Ticket.hasMany(models.seat, { onDelete: 'CASCADE', as: 'seat_ticket', foreignKey: 'maVe' });
     Ticket.belongsTo(models.user, {
       foreignKey: 'taiKhoanNguoiDung',
       as: 'taiKhoanNguoiDung_ticket',
