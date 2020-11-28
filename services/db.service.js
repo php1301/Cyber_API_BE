@@ -40,7 +40,8 @@ const dbService = (env) => {
     db.sequelize = sequelize;
     // db.Sequelize = Sequelize;
     if (sync) {
-      db.sequelize.sync({ alter: true }); seed(db);
+      db.sequelize.sync({ alter: true });
+      seed(db);
     }
     return db;
   };
