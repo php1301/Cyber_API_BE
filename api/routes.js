@@ -8,5 +8,6 @@ router.use('/phim', require('./phim/index'));
 router.use('/nhom', require('./nhom/index'));
 router.use('/ticket', require('./ticket/index'));
 router.use('/cinema', require('./cinema/index'));
+router.use('/lichchieu', require('./lichchieu/index'));
 
 module.exports = router;

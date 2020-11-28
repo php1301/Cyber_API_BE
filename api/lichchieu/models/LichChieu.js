@@ -7,20 +7,18 @@ module.exports = () => {
 
   LichChieu.init({
     maLichChieu: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       primaryKey: true,
-      unique: {
-        msg: 'maLichChieu existed',
-      },
+      autoIncrement: true,
     },
     maRap: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
     maPhim: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
     ngayChieu: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
     },
     giaVe: {
       type: Sequelize.FLOAT,
@@ -50,22 +48,24 @@ module.exports = () => {
   LichChieu.associate = function (models) {
     LichChieu.belongsTo(models.cinema, {
       foreignKey: 'maRap',
-      as: 'Cac_Lich_Chieu_rap',
+      as: 'cacLichChieuRap',
+      hooks: true,
     });
     LichChieu.belongsTo(models.phim, {
       foreignKey: 'maPhim',
-      as: 'Phim_Lich_Chieu',
+      as: 'lichChieuCuaPhim',
+      hooks: true,
     });
     LichChieu.belongsToMany(models.nhom, {
       through: 'LichChieu_Nhom',
     });
     LichChieu.belongsTo(models.cinematype, {
       foreignKey: 'maCumRap',
-      as: 'Cac_Lich_Chieu_Cum_Rap',
+      as: 'cacLichChieuCumRap',
     });
     LichChieu.belongsTo(models.cinemasystem, {
       foreignKey: 'maHeThongRap',
-      as: 'Cac_Lich_Chieu_He_Thong_Rap',
+      as: 'cacLichChieuHeThongRap',
     });
     /**
      * -------------- SCOPE ----------------
@@ -83,6 +83,18 @@ module.exports = () => {
           ],
         },
       ],
+    });
+    /**
+     * -------------- HOOKS ----------------
+     */
+    LichChieu.addHook('beforeCreate', 'ngayChieuVaNgayKhoiChieu', async (lichchieu, options) => {
+      const ngayKhoiChieu = await models.phim.findByPk(lichchieu.maPhim, {
+        attributes: ['ngayKhoiChieu'],
+      });
+      if (ngayKhoiChieu.ngayKhoiChieu > lichchieu.ngayChieu) {
+        return options.transaction.rollback().then((_) => { throw EvalError('Ngay Chieu phai lon hon Ngay Khoi Chieu'); });
+      }
+      // if(models.phim.ngayKhoiChieu <)
     });
   };
   return LichChieu;
