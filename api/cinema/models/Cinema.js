@@ -7,8 +7,8 @@ module.exports = () => {
   Cinema.init({
     maRap: {
       type: Sequelize.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
     },
     tenRap: {
       type: Sequelize.STRING,
@@ -33,6 +33,7 @@ module.exports = () => {
       foreignKey: 'maCumRap',
       as: 'Thuoc_Cum_Rap',
     });
+    // Hooks seats = soGhe
     Cinema.hasMany(models.seat, {
       foreignKey: 'maRap',
       as: 'Cac_Cho_Ngoi_Trong_Rap',
