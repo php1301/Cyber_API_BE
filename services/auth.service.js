@@ -7,7 +7,7 @@ const authService = () => {
   const issue = (payload) => jwt.sign(payload, secret, { expiresIn: 10800 });
   const authenticate = (req, res, next) => {
     const token = req.header('token');
-    console.log(token);
+    // console.log(token);
     if (!token) {
       return res.status(401).json({
         message: 'You must provide token',
@@ -27,7 +27,7 @@ const authService = () => {
   };
   const authorize = (userTypeArray) => (req, res, next) => {
     const { maLoaiNguoiDung } = req.user.payload;
-    console.log(maLoaiNguoiDung);
+    // console.log(maLoaiNguoiDung);
     if (userTypeArray.findIndex((elm) => elm === maLoaiNguoiDung) !== -1) { return next(); }
     return res.status(401).json({ message: 'You dont have permission' });
   };
