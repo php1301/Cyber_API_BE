@@ -9,14 +9,12 @@ module.exports = () => {
   // const User = db.define('User', {
   Seat.init({
     maGhe: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       primaryKey: true,
-      unique: {
-        msg: 'This seat already exist.',
-      },
+      autoIncrement: true,
     },
     maRap: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
     tenGhe: {
       type: Sequelize.STRING,
@@ -31,7 +29,7 @@ module.exports = () => {
       type: Sequelize.BOOLEAN,
     },
     maVe: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
   }, {
     sequelize,
