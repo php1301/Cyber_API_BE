@@ -9,5 +9,7 @@ const authService = require('../../services/auth.service');
 const auth = authService();
 
 const router = express.Router();
-router.post('/lay-thong-tin-he-thong-rap', auth.authenticate, auth.authorize(['admin', 'client']), cinemaController.layThongTinHeThongRap);
+router.get('/lay-thong-tin-he-thong-rap', cinemaController.layThongTinHeThongRap);
+router.get('/lay-thong-tin-cum-rap-theo-he-thong', cinemaController.layThongTinCumRapTheoHeThong);
+router.get('/lay-thong-tin-lich-chieu-he-thong-rap', cinemaController.layThongTinLichChieuHeThongRap);
 module.exports = router;
