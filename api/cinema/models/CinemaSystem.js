@@ -31,41 +31,45 @@ module.exports = () => {
     CinemaSystem.hasMany(models.lichchieu, {
       onDelete: 'CASCADE',
       as: 'lichchieu_hethongrap',
+      foreignKey: 'maHeThongRap',
     });
     CinemaSystem.hasMany(models.cinematype, {
       onDelete: 'CASCADE',
       as: 'lstCumRap',
+      foreignKey: 'maHeThongRap',
     });
     CinemaSystem.hasMany(models.cinematype, {
       onDelete: 'CASCADE',
       as: 'cumRapChieu',
+      foreignKey: 'maHeThongRap',
     });
     /**
      * -------------- SCOPE ----------------
      */
     CinemaSystem.addScope('lichChieuCacPhimHeThongRap', {
       include: [{
-        model: models.cinematype,
+        model: models.lichchieu,
+        as: 'lichchieu_hethongrap',
         required: true,
-        as: 'lstCumRap',
-        attributes: {
-          include: ['maCumRap', 'tenCumRap', 'diaChi'],
-        },
-        include: [{
-          model: models.lichchieu,
-          as: 'cacLichChieuCumRap',
-          attributes: {
-            include: ['maLichChieu', 'tenRap', 'maRap', 'ngayChieuGioChieu', 'giaVe'],
+        include: [
+          {
+            model: models.cinematype,
+            as: 'cacLichChieuCumRap',
+            required: true,
           },
-          required: true,
-          include: [{
+          {
             model: models.phim,
-            attributes: {
-              include: ['maPhim', 'tenPhim', 'hinhAnh'],
-            },
             as: 'lichChieuCuaPhim',
-          }],
-        }],
+            required: true,
+            attributes: ['maPhim', 'tenPhim', 'hinhAnh'],
+          },
+          {
+            model: models.cinema,
+            as: 'cacLichChieuRap',
+            required: true,
+          },
+        ]
+        ,
       }],
     });
     CinemaSystem.addScope('thongTinCumRapTheoHeThong', {
@@ -74,7 +78,7 @@ module.exports = () => {
         required: true,
         as: 'lstCumRap',
         attributes: {
-          include: ['maCumRap', 'tenCumRap', 'diaChi'],
+          include: ['maCumRap', 'tenCumRap'],
         },
         include: [{
           model: models.cinema,
@@ -84,6 +88,16 @@ module.exports = () => {
             include: ['maRap', 'tenRap'],
           },
         }],
+      }],
+    });
+    CinemaSystem.addScope('thongTinCumRapTheoHeThongKhongGomRap', {
+      include: [{
+        model: models.cinematype,
+        required: true,
+        as: 'lstCumRap',
+        attributes: {
+          include: ['maCumRap', 'tenCumRap'],
+        },
       }],
     });
   };
