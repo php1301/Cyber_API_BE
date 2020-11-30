@@ -20,7 +20,7 @@ module.exports = () => {
       type: Sequelize.STRING,
     },
     stt: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
     maLoaiGhe: {
       type: Sequelize.STRING,
@@ -47,6 +47,18 @@ module.exports = () => {
   /**
        * -------------- CLASS METHOD ----------------
        */
+  Seat.updateTrangThai = function (data, t) {
+    return data.map(async (i) => {
+      await Seat.update({
+        kichHoat: true,
+      }, {
+        where: {
+          maGhe: i,
+        },
+        transaction: t,
+      });
+    });
+  };
   // eslint-disable-next-line
    
   return Seat;
