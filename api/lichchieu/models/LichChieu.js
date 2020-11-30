@@ -35,6 +35,15 @@ module.exports = () => {
     maCumRap: {
       type: Sequelize.STRING,
     },
+    gioChieu: {
+      type: Sequelize.VIRTUAL,
+      get() {
+        const time = this.ngayChieu.getTime();
+        const timeFormat = new Date(time);
+        const timeResult = `${timeFormat.getHours()}:${timeFormat.getMinutes()} - GMT + 7`;
+        return timeResult;
+      },
+    },
 
   }, {
     sequelize,
@@ -70,14 +79,46 @@ module.exports = () => {
     /**
      * -------------- SCOPE ----------------
      */
-    LichChieu.addScope('rapGhe', {
+    LichChieu.addScope('thongTinLichChieu', {
+      attributes: ['maLichChieu', 'ngayChieu', 'gioChieu'],
       include: [
         {
+          model: models.phim,
+          as: 'lichChieuCuaPhim',
+          attributes: ['maPhim', 'tenPhim', 'hinhAnh'],
+          required: true,
+        },
+        {
+          model: models.cinematype,
+          as: 'cacLichChieuCumRap',
+          attributes: ['maCumRap', 'tenCumRap'],
+          required: true,
+        },
+        {
           model: models.cinema,
+          as: 'cacLichChieuRap',
           required: true, // Inner Join
           include: [
             {
               model: models.seat,
+              as: 'cacChoNgoiTrongRap',
+              required: true,
+            },
+          ],
+        },
+      ],
+    });
+    LichChieu.addScope('gheCuaLichChieu', {
+      attributes: ['maLichChieu', 'ngayChieu', 'gioChieu'],
+      include: [
+        {
+          model: models.cinema,
+          as: 'cacLichChieuRap',
+          required: true, // Inner Join
+          include: [
+            {
+              model: models.seat,
+              as: 'cacChoNgoiTrongRap',
               required: true,
             },
           ],
