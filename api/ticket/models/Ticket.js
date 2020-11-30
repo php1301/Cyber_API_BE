@@ -43,7 +43,7 @@ module.exports = () => {
      * -------------- ASSOCIATION ----------------
      */
   Ticket.associate = function (models) {
-    Ticket.hasMany(models.seat, { onDelete: 'CASCADE', as: 'seat_ticket', foreignKey: 'maVe' });
+    Ticket.hasMany(models.seat, { onDelete: 'CASCADE', as: 'danhSachGhe', foreignKey: 'maVe' });
     Ticket.belongsTo(models.user, {
       foreignKey: 'taiKhoanNguoiDung',
       as: 'taiKhoanNguoiDung_ticket',
