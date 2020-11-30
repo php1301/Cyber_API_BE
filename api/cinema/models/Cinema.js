@@ -36,7 +36,7 @@ module.exports = () => {
     // Hooks seats = soGhe
     Cinema.hasMany(models.seat, {
       foreignKey: 'maRap',
-      as: 'Cac_Cho_Ngoi_Trong_Rap',
+      as: 'cacChoNgoiTrongRap',
     });
   };
   return Cinema;
