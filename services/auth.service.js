@@ -4,7 +4,7 @@ const { jwtVerify } = require('../helpers/callback.helper');
 const secret = process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'secret';
 
 const authService = () => {
-  const issue = (payload) => jwt.sign(payload, secret, { expiresIn: 10800 });
+  const issue = (payload) => jwt.sign(payload, secret, { expiresIn: '7d' });
   const authenticate = (req, res, next) => {
     const token = req.header('token');
     // console.log(token);
