@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
-const model = require('./models/Phim');
+const models = require('../../services/db.service');
 
-const Phim = model();
 const PhimController = () => {
+  const db = models().generateModel(false);
   const layDanhSachPhim = async (req, res) => {
     const { maNhom, tenPhim } = req.query;
     try {
-      const phimData = await Phim.findAll({
+      const phimData = await db.phim.findAll({
         where: {
           maNhom,
           [Sequelize.Op.or]: {
@@ -30,7 +30,7 @@ const PhimController = () => {
     const pageSizeNum = parseInt(pageSize || 10, 10);
     const offset = pageNum * pageSizeNum;
     const limit = pageSizeNum; try {
-      const phimData = await Phim.findAll({
+      const phimData = await db.phim.findAll({
         where: {
           maNhom,
           [Sequelize.Op.or]: {
@@ -56,7 +56,7 @@ const PhimController = () => {
     const pageSizeNum = parseInt(pageSize || 10, 10);
     const offset = pageNum * pageSizeNum;
     const limit = pageSizeNum; try {
-      const phimData = await Phim.findAll({
+      const phimData = await db.phim.findAll({
         where: {
           maNhom,
           [Sequelize.Op.or]: {
@@ -83,7 +83,7 @@ const PhimController = () => {
     } = req.body;
     if (tenPhim && maNhom) {
       try {
-        const newPhim = await Phim.create({
+        const newPhim = await db.phim.create({
           tenPhim,
           trailer,
           hinhAnh,
@@ -104,9 +104,9 @@ const PhimController = () => {
   const themHinhAnhPhimUpload = async (req, res) => {
     console.log(req.file);
     const { maPhim } = req.params;
-    // == Phim.update
+    // == db.phim.update
     // 2 ways https://sequelize.org/v5/manual/instances.html#updating---saving---persisting-an-instance
-    const phimToUpload = await Phim.findByPk(maPhim);
+    const phimToUpload = await db.phim.findByPk(maPhim);
 
     if (phimToUpload) {
       phimToUpload.hinhAnh = req.file.path;
@@ -114,38 +114,41 @@ const PhimController = () => {
         .then((r) => res.stautus(200).json(r))
         .catch((e) => { console.log(e); return res.status(400).json({ msg: e.message }); });
     }
-    return res.status(400).json({ msg: 'Phim not exists' });
+    return res.status(400).json({ msg: 'db.phim not exists' });
   };
   const layThongTinPhim = async (req, res) => {
     const { maPhim } = req.query;
-    const thongTinPhim = await Phim.findByPk(maPhim);
-    if (!thongTinPhim) return res.status(400).json({ msg: 'Phim not exists' });
+    const thongTinPhim = await db.phim.findByPk(maPhim);
+    if (!thongTinPhim) return res.status(400).json({ msg: 'db.phim not exists' });
     return res.status(200).json({ thongTinPhim });
   };
   const xoaPhim = async (req, res) => {
     const { maPhim } = req.params;
-    const affected = await Phim.destroy({
+    const affected = await db.phim.destroy({
       where: {
         maPhim,
       },
     });
     if (affected === 0) {
-      return res.status(400).json({ msg: 'No Phim with this id found' });
+      return res.status(400).json({ msg: 'No db.phim with this id found' });
     }
-    return res.status(200).json({ msg: 'Phim deleted' });
+    return res.status(200).json({ msg: 'db.phim deleted' });
   };
   const layThongTinLichChieuPhim = async (req, res) => {
     const { maPhim } = req.query;
-    try {
-      const thongTinLichChieuPhimData = Phim.scope('layThongTinLichChieuPhim').findAll({
-        where: {
-          maPhim,
-        },
-      });
-      res.status(200).json({ thongTinLichChieuPhimData });
-    } catch (e) {
-      res.status(400).json({ msg: e.message });
+    if (maPhim) {
+      try {
+        const thongTinLichChieuPhimData = await db.phim.scope('layThongTinLichChieuPhim').findAll({
+          where: {
+            maPhim,
+          },
+        });
+        return res.status(200).json({ thongTinLichChieuPhimData });
+      } catch (e) {
+        return res.status(400).json({ msg: e.message });
+      }
     }
+    return res.status(404).json({ msg: 'Mã phim không hợp lệ' });
   };
   return {
     layDanhSachPhim,
