@@ -57,29 +57,38 @@ module.exports = () => {
      * -------------- SCOPE ----------------
      */
     Phim.addScope('layThongTinLichChieuPhim', {
+      attributes: { include: [[Sequelize.col('cacLichChieuCuaPhim.cacLichChieuRap.tenRap'), 'tenRap']] },
+      group: ['cacLichChieuCuaPhim.cacLichChieuHeThongRap.maHeThongRap'],
       include: [{
         model: models.lichchieu,
         required: true,
         as: 'cacLichChieuCuaPhim',
         attributes: {
-          include: ['maLichChieu', [Sequelize.col('cinema.tenRap'), 'tenRap'], 'thoiLuong', 'giaVe', 'ngayChieuGioChieu'],
+          exclude: ['maNhom', 'thoiLuong'],
         },
-        include: [{
-          model: models.cinemasystem,
-          required: true,
-          attributes: {
-            include: ['maHeThongRap', 'tenHeThongRap', 'logo'],
+        include: [
+          {
+            model: models.cinemasystem,
+            required: true,
+            as: 'cacLichChieuHeThongRap',
           },
-          as: 'cacLichChieuHeThongRap',
-          include: [{
+          {
+            // where: {
+            //   '$cacLichChieuCuaPhim.cacLichChieuHeThongRap.cumRapChieu.maCumRap$': Sequelize.col('cacLichChieuCuaPhim.maCumRap'),
+            // },
             model: models.cinematype,
             required: true,
-            as: 'cumRapChieu',
-            attributes: {
-              include: ['maCumRap, tenCumRap, hinhAnh'],
-            },
-          }],
-        }],
+            as: 'cacLichChieuCumRap',
+          },
+          // include: [
+          // ],
+          {
+            model: models.cinema,
+            required: true,
+            as: 'cacLichChieuRap',
+            attributes: ['maRap', 'tenRap'],
+          },
+        ],
       }],
     });
   };
