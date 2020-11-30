@@ -28,7 +28,7 @@ module.exports = () => {
          */
   CinemaType.associate = function (models) {
     CinemaType.hasMany(models.lichchieu, { as: 'cacLichChieuCumRap' });
-    CinemaType.hasMany(models.cinema, { onDelete: 'CASCADE', as: 'cacRapCuaCumRap' });
+    CinemaType.hasMany(models.cinema, { onDelete: 'CASCADE', as: 'cacRapCuaCumRap', foreignKey: 'maCumRap' });
     CinemaType.belongsTo(models.cinemasystem, {
       foreignKey: 'maHeThongRap',
       as: 'He_Thong_Rap',
