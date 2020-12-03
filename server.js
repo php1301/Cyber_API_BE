@@ -36,9 +36,11 @@ app.use(helmet({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// use route, map route
 app.use('/api', require('./api/routes'));
 app.use('/swagger', require('./documents/swagger'));
 
+// Bắt đầu chạy server
 server.listen(config.port, () => {
   if (env !== 'production' &&
       env !== 'development' &&
