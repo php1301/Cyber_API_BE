@@ -66,6 +66,7 @@ module.exports = () => {
       as: 'nhom',
     });
     User.hasMany(models.ticket, {
+      foreignKey: 'taiKhoanNguoiDung',
       onDelete: 'CASCADE',
     });
     /**
