@@ -3,6 +3,9 @@ const Sequelize = require('sequelize');
 const authService = require('../../services/auth.service');
 const bcryptService = require('../../services/bcrypt.service');
 const _ = require('lodash');
+// models object đã eager loading
+const models = require('../../services/db.service');
+
 // const model = require('../../services/db.service');
 
 const model = require('./models/User');
@@ -10,6 +13,8 @@ const model = require('./models/User');
 const User = model();
 const UserController = () => {
   const register = async (req, res) => {
+    // Khởi tạo object các models eager loading
+    const db = models().generateModel(false);
     const { email, password, password2 } = req.body;
     if (password === password2) {
       try {
