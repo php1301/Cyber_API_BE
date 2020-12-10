@@ -132,11 +132,11 @@ const UserController = () => {
     const {
       taiKhoan, matKhau, email, soDT, maNhom, maLoaiNguoiDung, hoTen,
     } = req.query;
-    // PATCH
+    // PUT sửa toàn bộ record
     // const found = User.findByPk(taiKhoan);
     // (await found).set(body)
-    // .save
-    // PUT
+    //   .save;
+    // PATCH - sửa 1 phần record
     const updatedUser = await User.update({
       matKhau,
       email,

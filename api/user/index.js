@@ -15,7 +15,7 @@ router.post('/login', userController.login);
 router.get('/user-list', auth.authenticate, auth.authorize(['admin']), userController.layDanhSachNguoiDung);
 router.get('/user-list-pagination', auth.authenticate, auth.authorize(['admin']), userController.layDanhSachNguoiDungPhanTrang);
 router.get('/:taiKhoan', auth.authenticate, auth.authorize(['admin', 'client']), userController.layThongTinTaiKhoan);
-router.put('/user-update', auth.authenticate, auth.authorize(['admin', 'client']), validateUserUpdate, userController.capNhatThongTinNguoiDung);
+router.patch('/user-update', auth.authenticate, auth.authorize(['admin', 'client']), validateUserUpdate, userController.capNhatThongTinNguoiDung);
 router.delete('/:taiKhoan', auth.authenticate, auth.authorize(['admin']), userController.xoaNguoiDung);
 
 module.exports = router;
