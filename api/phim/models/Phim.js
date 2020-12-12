@@ -52,13 +52,12 @@ module.exports = () => {
     Phim.belongsToMany(models.nhom, {
       through: 'Phim_Nhom',
     });
-    Phim.hasMany(models.lichchieu, { as: 'cacLichChieuCuaPhim', foreignKey: 'maPhim' });
+    Phim.hasMany(models.lichchieu, { as: 'cacLichChieuCuaPhim', foreignKey: 'maPhim', });
     /**
      * -------------- SCOPE ----------------
      */
     Phim.addScope('layThongTinLichChieuPhim', {
       attributes: { include: [[Sequelize.col('cacLichChieuCuaPhim.cacLichChieuRap.tenRap'), 'tenRap']] },
-      group: ['cacLichChieuCuaPhim.cacLichChieuHeThongRap.maHeThongRap'],
       include: [{
         model: models.lichchieu,
         required: true,

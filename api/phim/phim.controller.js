@@ -109,6 +109,12 @@ const PhimController = () => {
     const phimToUpload = await db.phim.findByPk(maPhim);
 
     if (phimToUpload) {
+      // Lúc này request sẽ có thêm req.file.path
+      // ta lưu vào attribute hinhAnh
+      // req.file.path có thể được config thành tên {{server}}/ bên upload-image.js 
+      // Nếu làm như trên thì ta phải config ngoài server.js
+      // Hoặc upload lên service bên thứ 3, cloudinary, aws
+      // Ở đây ta demo cho việc upload ảnh
       phimToUpload.hinhAnh = req.file.path;
       phimToUpload.save()
         .then((r) => res.stautus(200).json(r))
