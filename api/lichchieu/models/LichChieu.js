@@ -17,9 +17,6 @@ module.exports = () => {
     maPhim: {
       type: Sequelize.INTEGER,
     },
-    ngayChieu: {
-      type: Sequelize.DATE,
-    },
     giaVe: {
       type: Sequelize.FLOAT,
     },
@@ -34,6 +31,9 @@ module.exports = () => {
     },
     maCumRap: {
       type: Sequelize.STRING,
+    },
+    ngayChieu: {
+      type: Sequelize.DATE,
     },
     gioChieu: {
       type: Sequelize.VIRTUAL,
