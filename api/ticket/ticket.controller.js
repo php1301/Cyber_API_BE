@@ -25,6 +25,8 @@ const TicketController = () => {
           // eslint-disable-next-line array-callback-return
           const seatsToUpdate = [];
           danhSachVe.map((i) => {
+            // duyệt qua các ghế khách đã chọn
+          // nếu ghế không thuộc rạp thì throw Error, dừng lại
             const index = gheCuaLichChieu
               .cacLichChieuRap
               .cacChoNgoiTrongRap
@@ -32,6 +34,9 @@ const TicketController = () => {
             if (index === -1) {
               throw Error('Ghế không thuộc rạp này');
             }
+            // Nếu ghế chưa đặt thì push vào mảng, ở đây ta có thể handle
+            // Các logic phức tạp hơn như nếu ghế đã đặt thì throw
+            // 2 ghế không kế nhau thì throw,...
             if (
               gheCuaLichChieu
                 .cacLichChieuRap
@@ -42,6 +47,7 @@ const TicketController = () => {
               return seatsToUpdate.push(i.maGhe);
             }
           });
+          // Sử dụng class method, truyền argument là mảng các ghế để set trạng thái, transaction
           await db.seat.updateTrangThai(seatsToUpdate, t);
           console.log(danhSachVe);
           const ticket = await db.ticket.create({
