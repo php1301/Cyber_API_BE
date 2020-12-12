@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-const model = require('./models/LichChieu');
 const models = require('../../services/db.service');
 
 const LichChieuController = () => {
@@ -18,6 +16,7 @@ const LichChieuController = () => {
         }, {
           include: db.cinematype,
           as: 'Thuoc_Cum_Rap',
+          transaction: t,
         });
         const maHeThongRap = await db.cinematype.findOne({
           where: {
@@ -27,6 +26,7 @@ const LichChieuController = () => {
         }, {
           include: db.cinematype,
           as: 'He_Thong_Rap',
+          transaction: t,
         });
 
         const lichChieu = await db.lichchieu.create({
