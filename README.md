@@ -10,4 +10,4 @@
 - config - cho routes, database, etc.
 - test - sử dụng [Jest](https://github.com/facebook/jest)
 
-Document tại: https://luudanthanchet.gitbook.io/cyber-movies-api/
+
